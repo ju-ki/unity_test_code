@@ -7,8 +7,22 @@ using Assert = UnityEngine.Assertions.Assert;//NunitではなくてUnityのAsser
 
 namespace Tests
 {
+    [TestFixture]
+    [Author("Jukiya")]
     public class NewEditModeTest
     {
+        [OneTimeSetUp]//最初のテストが実行される前に一回だけ出力される
+        public void OneTimeSetUp()
+        {
+            Debug.LogWarning("OnetimeSetUp");
+        }
+
+        [SetUp]//テストが実行される前に毎回出力される
+        public void SetUp()
+        {
+            Debug.Log("SetUp");
+        }
+
         private bool isFight = false;
         // A Test behaves as an ordinary method
         [Test]
@@ -57,7 +71,7 @@ namespace Tests
             //金額->Amount
             //[2]消費税(10%)を含めた金額が1000円ではないテストコードを書きなさい
             //[3]買い物リストを定義してその中にバナナが含まれていないテストコードを書きなさい
-            
+
             //[[1]
             int appleAmount = 100;
             int orangeAmount = 200;
@@ -75,7 +89,7 @@ namespace Tests
             Assert.AreNotEqual(1000, amountIncludingConsumptionTax);
             //[3]
             List<string> purchaseList = new List<string>(){"モモ","ミカン","ブドウ"};
-            bool isContainBananaFlag = false;
+            // bool isContainBananaFlag = false;
             // if(purchaseList.Contains("バナナ"))
             // {
             //     isContainBananaFlag = true;
@@ -85,12 +99,20 @@ namespace Tests
             //     isContainBananaFlag = false;
             // }
             // Assert.IsFalse(isContainBananaFlag);
-            for (int i=0; i < purchaseList.Count; i++)
-            {
-                Assert.AreNotEqual("バナナ", purchaseList[i]);
-                Assert.AreNotEqual("メロン", purchaseList[i]);
-            }
+            CollectionAssert.Contains(purchaseList, "ミカン");
+            CollectionAssert.AllItemsAreUnique(purchaseList);
+            // for (int i=0; i < purchaseList.Count; i++)
+            // {
+            //     Assert.AreNotEqual("バナナ", purchaseList[i]);
+            //     Assert.AreNotEqual("メロン", purchaseList[i]);
+            // }
             // Assert.AreNotEqual("バナナ", purchaseList);
+        }
+        //テスト実行後に毎回出力
+        [TearDown]
+        public void TearDown()
+        {
+            Debug.Log("TearDown");
         }
         [Test]
         public void SimpleCalculationPasses()
@@ -103,15 +125,31 @@ namespace Tests
             Assert.AreEqual(3, num1 + num2);
             Debug.Assert(num1 + 1 == num2);
         }
-
-        // A UnityTest behaves like a coroutine in Play Mode. In Edit Mode you can use
-        // `yield r eturn null;` to skip a frame.
-        [UnityTest]
-        public IEnumerator NewEditModeTestWithEnumeratorPasses()
+        [Description("絶対値を返すテスト")]
+        // [Ignore("絶対値のテストはバグがあるので無視musi")]
+        [Category("数学系")]
+        [TestCase(1, -1)]
+        [TestCase(2, -2)]
+        [TestCase(3, -3)]
+        // [TestCase(-10, 100)]
+        // [Retry(3)]
+        public void AbsTest(int expected, int input)
         {
-            // Use the Assert class to test conditions.
-            // Use yield to skip a frame.
-            yield return null;
+            Assert.AreEqual(expected, Mathf.Abs(input));
+        }
+        [Test, Pairwise]
+        //Valueで直接引数を選択できる
+        //結果一覧->a + y, a - x, b - y, b + x, c - x, c + y
+        public void ValidateLandingSiteOfRover_When_GoingToMars
+        ([Values("a", "b", "c")] string a, [Values("+", "-")] string b, [Values("x", "y")] string c)
+        {
+            // Debug.WriteLine("{0} {1} {2}", a, b, c);
+        }
+
+        [OneTimeTearDown]//クラス内の最後のテストが実行された後に一回だけ出力される
+        public void OneTimeTearDown()
+        {
+            Debug.LogWarning("OnetimeTearDown");
         }
     }
 }
