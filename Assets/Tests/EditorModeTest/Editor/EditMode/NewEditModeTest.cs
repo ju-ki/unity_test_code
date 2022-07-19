@@ -7,7 +7,6 @@ using Assert = UnityEngine.Assertions.Assert;//NunitではなくてUnityのAsser
 
 namespace Tests
 {
-    [TestFixture]
     [Author("Jukiya")]
     public class NewEditModeTest
     {
@@ -29,7 +28,7 @@ namespace Tests
         public void NewEditModeTestSimplePasses()
         {
             // ref:https://docs.unity3d.com/ja/current/ScriptReference/Assertions.Assert.html
-            Assert.AreEqual(2, 1 + 1);//a,bが同じであるかのテスト
+            Assert.AreEqual(2, 1 + 1);//a,bが同じであるかのテスト(Assert.AreEqual(a, b) (a=b))
             // Assert.AreEqual(3, 1 + 1);//通らないはず
             Assert.AreNotEqual(3, 1 + 1);//a,bが同じではないかのテスト
             // Assert.IsTrue(isFight);//これも通らない
@@ -54,14 +53,14 @@ namespace Tests
             var gameObject = new GameObject();
             gameObject.name = "object";
             Assert.AreNotEqual(gameObject.name, "フルーツ");
-            // if (gameObject.name != "フルーツ")
-            // {
-            //     Debug.Log("フルーツじゃないよ");
-            // }
-            // else
-            // {
-            //     Debug.Log("フルーツだよ");
-            // }
+            if (gameObject.name != "フルーツ")
+            {
+                Debug.Log("フルーツじゃないよ");
+            }
+            else
+            {
+                Debug.Log("フルーツだよ");
+            }
         }
         [Test]
         public void SimpleTotalAmountOfPurchase()
@@ -145,7 +144,6 @@ namespace Tests
         {
             // Debug.WriteLine("{0} {1} {2}", a, b, c);
         }
-
         [OneTimeTearDown]//クラス内の最後のテストが実行された後に一回だけ出力される
         public void OneTimeTearDown()
         {
