@@ -20,10 +20,18 @@ namespace Tests
                 testObject = GameObject.Find("testObject");
             };
         }
+
         [UnityTest]
         public IEnumerator PlayModeGameObjectMovementPasses()
         {
             Assert.IsNotNull(testObject);
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator CheckGameObjectName()
+        {
+            Assert.AreEqual("testObject", testObject.name);
             yield return null;
         }
     }
