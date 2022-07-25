@@ -22,6 +22,8 @@ namespace Tests
             Debug.Log("SetUp");
         }
 
+
+
         private bool isFight = false;
         // A Test behaves as an ordinary method
         [Test]

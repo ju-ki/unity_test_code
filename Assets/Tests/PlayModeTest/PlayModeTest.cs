@@ -13,6 +13,7 @@ namespace Tests
         GameObjectMovement gameMovement;
         GameObject testObject;
         [OneTimeSetUp]
+        //ロードシーンが読み込まれたという条件が揃ったなら->すぐに->GameObjectを取ってきてテスト
         public void InitTest()
         {
             SceneManager.LoadSceneAsync("SampleScene").completed += _ => {
